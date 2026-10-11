@@ -28,7 +28,7 @@
       {
         "kind": "AnnotationQuery",
         "spec": {
-          "enable": true,
+          "enable": false,
           "hide": false,
           "iconColor": "orange",
           "legacyOptions": {
@@ -8074,7 +8074,32 @@
                   },
                   "unit": "percent"
                 },
-                "overrides": []
+                "overrides": [
+                  {
+                    "__systemRef": "hideSeriesFrom",
+                    "matcher": {
+                      "id": "byNames",
+                      "options": {
+                        "mode": "exclude",
+                        "names": [
+                          "CPU busy"
+                        ],
+                        "prefix": "All except:",
+                        "readOnly": true
+                      }
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.hideFrom",
+                        "value": {
+                          "legend": false,
+                          "tooltip": true,
+                          "viz": true
+                        }
+                      }
+                    ]
+                  }
+                ]
               },
               "options": {
                 "legend": {
@@ -30320,7 +30345,7 @@
                                     "kind": "ElementReference",
                                     "name": "panel-101"
                                   },
-                                  "height": 9,
+                                  "height": 8,
                                   "width": 12,
                                   "x": 0,
                                   "y": 8
@@ -30333,7 +30358,7 @@
                                     "kind": "ElementReference",
                                     "name": "panel-102"
                                   },
-                                  "height": 9,
+                                  "height": 8,
                                   "width": 12,
                                   "x": 12,
                                   "y": 8
