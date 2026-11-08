@@ -1,1144 +1,2084 @@
 {
-  "apiVersion": "dashboard.grafana.app/v1",
+  "apiVersion": "dashboard.grafana.app/v2",
   "kind": "Dashboard",
   "metadata": {
     "name": "ddg3n3mwbaot8gb"
   },
   "spec": {
-    "annotations": {
-      "list": []
-    },
-    "description": "A dashboard that monitors the Blackbox Exporter. It is created using the [blackbox-exporter-mixin](https://github.com/adinhodovic/blackbox-exporter-mixin) for the [blackbox-exporter](https://github.com/prometheus/blackbox_exporter). The dashboards were generated using [blackbox-exporter-mixin](https://github.com/adinhodovic/blackbox-exporter-mixin). Open issues and create feature requests in the repository.",
-    "editable": false,
-    "gnetId": 16124,
-    "panels": [
+    "annotations": [
       {
-        "collapsed": false,
-        "gridPos": {
-          "h": 1,
-          "w": 24,
-          "x": 0,
-          "y": 0
-        },
-        "id": 1,
-        "title": "Summary",
-        "type": "row"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "$datasource"
-        },
-        "description": "Current up/down status for all probes. Each probe is shown as Up (green) or Down (red). Click a probe to navigate to its detail view.",
-        "fieldConfig": {
-          "defaults": {
-            "links": [
-              {
-                "targetBlank": true,
-                "title": "Go To Probe",
-                "type": "link",
-                "url": "d/blackbox-exporter-j4da/blackbox-exporter?var-instance=${__field.labels.instance}\u0026var-job=${__field.labels.job}"
-              }
-            ],
-            "mappings": [
-              {
-                "options": {
-                  "0": {
-                    "color": "red",
-                    "text": "Down"
-                  },
-                  "1": {
-                    "color": "green",
-                    "text": "Up"
-                  }
-                },
-                "type": "value"
-              }
-            ],
-            "thresholds": {
-              "steps": [
-                {
-                  "color": "green",
-                  "value": 0
-                }
-              ]
-            },
-            "unit": "short"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 5,
-          "w": 24,
-          "x": 0,
-          "y": 1
-        },
-        "id": 2,
-        "maxDataPoints": 100,
-        "options": {
-          "colorMode": "background",
-          "graphMode": "area",
-          "percentChangeColorMode": "standard",
-          "showPercentChange": false,
-          "text": {
-            "titleSize": 18,
-            "valueSize": 18
-          },
-          "textMode": "value_and_name"
-        },
-        "pluginVersion": "v11.4.0",
-        "targets": [
-          {
+        "kind": "AnnotationQuery",
+        "spec": {
+          "builtIn": true,
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations \u0026 Alerts",
+          "query": {
             "datasource": {
-              "type": "prometheus",
-              "uid": "${datasource}"
+              "name": "-- Grafana --"
             },
-            "expr": "max by (instance) (\n  probe_success{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n\n  }\n)\n",
-            "legendFormat": "{{instance}}"
+            "group": "grafana",
+            "kind": "DataQuery",
+            "spec": {},
+            "version": "v0"
           }
-        ],
-        "title": "Status Map",
-        "type": "stat"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "$datasource"
-        },
-        "description": "Total number of probes currently being monitored.",
-        "fieldConfig": {
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "steps": [
-                {
-                  "color": "red",
-                  "value": 0
-                },
-                {
-                  "color": "green",
-                  "value": 0.001
-                }
-              ]
-            },
-            "unit": "short"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 4,
-          "w": 6,
-          "x": 0,
-          "y": 6
-        },
-        "id": 3,
-        "options": {
-          "graphMode": "area",
-          "percentChangeColorMode": "standard",
-          "showPercentChange": false
-        },
-        "pluginVersion": "v11.4.0",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "$datasource"
-            },
-            "expr": "count(\n  probe_success{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n\n  }\n)\n",
-            "instant": false
-          }
-        ],
-        "title": "Probes",
-        "type": "stat"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "$datasource"
-        },
-        "description": "Percentage of probes currently reporting success.",
-        "fieldConfig": {
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "steps": [
-                {
-                  "color": "red",
-                  "value": 0
-                },
-                {
-                  "color": "yellow",
-                  "value": 0.99
-                },
-                {
-                  "color": "green",
-                  "value": 0.999
-                }
-              ]
-            },
-            "unit": "percentunit"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 4,
-          "w": 6,
-          "x": 6,
-          "y": 6
-        },
-        "id": 4,
-        "options": {
-          "graphMode": "area",
-          "percentChangeColorMode": "standard",
-          "showPercentChange": false
-        },
-        "pluginVersion": "v11.4.0",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "$datasource"
-            },
-            "expr": "(\n  count(\n    probe_success{\n      cluster=\"$cluster\",\njob=~\"$job\"\n\n\n    } == 1\n  )\n  OR vector(0)\n) /\ncount(\n  probe_success{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n\n  }\n)\n",
-            "instant": false
-          }
-        ],
-        "title": "Probes Success",
-        "type": "stat"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "$datasource"
-        },
-        "description": "Percentage of HTTP probes using SSL/TLS.",
-        "fieldConfig": {
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "steps": [
-                {
-                  "color": "red",
-                  "value": 0
-                },
-                {
-                  "color": "green",
-                  "value": 0.999
-                }
-              ]
-            },
-            "unit": "percentunit"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 4,
-          "w": 6,
-          "x": 12,
-          "y": 6
-        },
-        "id": 5,
-        "options": {
-          "graphMode": "area",
-          "percentChangeColorMode": "standard",
-          "showPercentChange": false
-        },
-        "pluginVersion": "v11.4.0",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "$datasource"
-            },
-            "expr": "count(\n  probe_http_ssl{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n\n  } == 1\n) /\ncount(\n  probe_http_version{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n\n  }\n)\n",
-            "instant": false
-          }
-        ],
-        "title": "Probes SSL",
-        "type": "stat"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "$datasource"
-        },
-        "description": "Average probe duration across all monitored instances.",
-        "fieldConfig": {
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "steps": [
-                {
-                  "color": "green",
-                  "value": 0
-                }
-              ]
-            },
-            "unit": "s"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 4,
-          "w": 6,
-          "x": 18,
-          "y": 6
-        },
-        "id": 6,
-        "options": {
-          "graphMode": "area",
-          "percentChangeColorMode": "standard",
-          "showPercentChange": false
-        },
-        "pluginVersion": "v11.4.0",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "$datasource"
-            },
-            "expr": "avg(\n  probe_duration_seconds{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n\n  }\n)\n",
-            "instant": false
-          }
-        ],
-        "title": "Probe Average Duration",
-        "type": "stat"
-      },
-      {
-        "collapsed": false,
-        "gridPos": {
-          "h": 1,
-          "w": 24,
-          "x": 0,
-          "y": 10
-        },
-        "id": 7,
-        "repeat": "instance",
-        "title": "$instance",
-        "type": "row"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "$datasource"
-        },
-        "description": "Current probe success rate for the selected instance.",
-        "fieldConfig": {
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "steps": [
-                {
-                  "color": "red",
-                  "value": 0
-                },
-                {
-                  "color": "yellow",
-                  "value": 0.99
-                },
-                {
-                  "color": "green",
-                  "value": 0.999
-                }
-              ]
-            },
-            "unit": "percentunit"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 3,
-          "w": 3,
-          "x": 0,
-          "y": 11
-        },
-        "id": 8,
-        "options": {
-          "colorMode": "background",
-          "graphMode": "area",
-          "percentChangeColorMode": "standard",
-          "reduceOptions": {
-            "calcs": [
-              "mean"
-            ]
-          },
-          "showPercentChange": false
-        },
-        "pluginVersion": "v11.4.0",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "$datasource"
-            },
-            "expr": "max by (instance) (\n  probe_success{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }\n)\n",
-            "instant": false
-          }
-        ],
-        "title": "Uptime",
-        "type": "stat"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "$datasource"
-        },
-        "description": "Average probe success rate over the last 30 days.",
-        "fieldConfig": {
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "steps": [
-                {
-                  "color": "red",
-                  "value": 0
-                },
-                {
-                  "color": "yellow",
-                  "value": 0.99
-                },
-                {
-                  "color": "green",
-                  "value": 0.999
-                }
-              ]
-            },
-            "unit": "percentunit"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 3,
-          "w": 3,
-          "x": 3,
-          "y": 11
-        },
-        "id": 9,
-        "options": {
-          "colorMode": "background",
-          "graphMode": "area",
-          "percentChangeColorMode": "standard",
-          "reduceOptions": {
-            "calcs": [
-              "mean"
-            ]
-          },
-          "showPercentChange": false
-        },
-        "pluginVersion": "v11.4.0",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "$datasource"
-            },
-            "expr": "avg_over_time(\n  probe_success{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }[30d]\n)\n",
-            "instant": true
-          }
-        ],
-        "title": "Uptime 30d",
-        "type": "stat"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "$datasource"
-        },
-        "description": "Whether the most recent probe succeeded.",
-        "fieldConfig": {
-          "defaults": {
-            "mappings": [
-              {
-                "options": {
-                  "0": {
-                    "color": "red",
-                    "text": "No"
-                  },
-                  "1": {
-                    "color": "green",
-                    "text": "Yes"
-                  }
-                },
-                "type": "value"
-              }
-            ],
-            "thresholds": {
-              "steps": [
-                {
-                  "color": "green",
-                  "value": 0
-                }
-              ]
-            },
-            "unit": "short"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 3,
-          "w": 3,
-          "x": 0,
-          "y": 14
-        },
-        "id": 10,
-        "options": {
-          "colorMode": "background",
-          "graphMode": "area",
-          "percentChangeColorMode": "standard",
-          "showPercentChange": false
-        },
-        "pluginVersion": "v11.4.0",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "$datasource"
-            },
-            "expr": "max by (instance) (\n  probe_success{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }\n)\n",
-            "instant": true
-          }
-        ],
-        "title": "Probe Success",
-        "type": "stat"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "$datasource"
-        },
-        "description": "Most recent HTTP status code returned by the probe.",
-        "fieldConfig": {
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "steps": [
-                {
-                  "color": "green",
-                  "value": 0
-                },
-                {
-                  "color": "blue",
-                  "value": 300
-                },
-                {
-                  "color": "yellow",
-                  "value": 400
-                },
-                {
-                  "color": "red",
-                  "value": 500
-                }
-              ]
-            },
-            "unit": "short"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 3,
-          "w": 3,
-          "x": 3,
-          "y": 14
-        },
-        "id": 11,
-        "options": {
-          "graphMode": "area",
-          "percentChangeColorMode": "standard",
-          "showPercentChange": false
-        },
-        "pluginVersion": "v11.4.0",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "$datasource"
-            },
-            "expr": "max by (instance) (\n  probe_http_status_code{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }\n)\n",
-            "instant": true
-          }
-        ],
-        "title": "Latest Response Code",
-        "type": "stat"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "$datasource"
-        },
-        "description": "Whether the probe endpoint is using SSL/TLS.",
-        "fieldConfig": {
-          "defaults": {
-            "mappings": [
-              {
-                "options": {
-                  "0": {
-                    "color": "red",
-                    "text": "No"
-                  },
-                  "1": {
-                    "color": "green",
-                    "text": "Yes"
-                  }
-                },
-                "type": "value"
-              }
-            ],
-            "thresholds": {
-              "steps": [
-                {
-                  "color": "green",
-                  "value": 0
-                }
-              ]
-            },
-            "unit": "short"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 3,
-          "w": 3,
-          "x": 0,
-          "y": 17
-        },
-        "id": 12,
-        "options": {
-          "colorMode": "background",
-          "graphMode": "area",
-          "percentChangeColorMode": "standard",
-          "showPercentChange": false
-        },
-        "pluginVersion": "v11.4.0",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "$datasource"
-            },
-            "expr": "max by (instance) (\n  probe_http_ssl{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }\n)\n",
-            "instant": true
-          }
-        ],
-        "title": "SSL",
-        "type": "stat"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "$datasource"
-        },
-        "description": "TLS version negotiated for the probe connection.",
-        "fieldConfig": {
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "steps": [
-                {
-                  "color": "red",
-                  "value": 0
-                },
-                {
-                  "color": "green",
-                  "value": 1
-                }
-              ]
-            },
-            "unit": "short"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 3,
-          "w": 3,
-          "x": 3,
-          "y": 17
-        },
-        "id": 13,
-        "options": {
-          "graphMode": "area",
-          "percentChangeColorMode": "standard",
-          "showPercentChange": false,
-          "textMode": "name"
-        },
-        "pluginVersion": "v11.4.0",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "${datasource}"
-            },
-            "expr": "max by (instance,version) (\n  probe_tls_version_info{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }\n)\n",
-            "instant": true,
-            "legendFormat": "{{version}}"
-          }
-        ],
-        "title": "SSL Version",
-        "type": "stat"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "$datasource"
-        },
-        "description": "Time remaining until the SSL certificate expires. Red when below the configured threshold.",
-        "fieldConfig": {
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "steps": [
-                {
-                  "color": "red",
-                  "value": 0
-                },
-                {
-                  "color": "green",
-                  "value": 1814400
-                }
-              ]
-            },
-            "unit": "dtdurations"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 3,
-          "w": 3,
-          "x": 0,
-          "y": 20
-        },
-        "id": 14,
-        "options": {
-          "colorMode": "background",
-          "graphMode": "none",
-          "percentChangeColorMode": "standard",
-          "showPercentChange": false
-        },
-        "pluginVersion": "v11.4.0",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "$datasource"
-            },
-            "expr": "min by (instance) (\n  probe_ssl_earliest_cert_expiry{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  } - time()\n)\n",
-            "instant": false
-          }
-        ],
-        "title": "SSL Certificate Expiry",
-        "type": "stat"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "$datasource"
-        },
-        "description": "Whether the probe followed any HTTP redirects.",
-        "fieldConfig": {
-          "defaults": {
-            "mappings": [
-              {
-                "options": {
-                  "0": {
-                    "color": "green",
-                    "text": "No"
-                  },
-                  "1": {
-                    "color": "blue",
-                    "text": "Yes"
-                  }
-                },
-                "type": "value"
-              }
-            ],
-            "thresholds": {
-              "steps": [
-                {
-                  "color": "green",
-                  "value": 0
-                }
-              ]
-            },
-            "unit": "short"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 3,
-          "w": 3,
-          "x": 3,
-          "y": 20
-        },
-        "id": 15,
-        "options": {
-          "colorMode": "background",
-          "graphMode": "area",
-          "percentChangeColorMode": "standard",
-          "showPercentChange": false
-        },
-        "pluginVersion": "v11.4.0",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "$datasource"
-            },
-            "expr": "max by (instance) (\n  probe_http_redirects{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }\n)\n",
-            "instant": true
-          }
-        ],
-        "title": "Redirects",
-        "type": "stat"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "$datasource"
-        },
-        "description": "HTTP protocol version used by the probe.",
-        "fieldConfig": {
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "steps": [
-                {
-                  "color": "green",
-                  "value": 0
-                }
-              ]
-            },
-            "unit": "short"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 3,
-          "w": 3,
-          "x": 0,
-          "y": 23
-        },
-        "id": 16,
-        "options": {
-          "graphMode": "area",
-          "percentChangeColorMode": "standard",
-          "showPercentChange": false
-        },
-        "pluginVersion": "v11.4.0",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "${datasource}"
-            },
-            "expr": "max by (instance) (\n  probe_http_version{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }\n)\n",
-            "instant": true,
-            "legendFormat": "{{version}}"
-          }
-        ],
-        "title": "HTTP Version",
-        "type": "stat"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "$datasource"
-        },
-        "description": "Mean probe duration for the selected instance.",
-        "fieldConfig": {
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "steps": [
-                {
-                  "color": "green",
-                  "value": 0
-                }
-              ]
-            },
-            "unit": "s"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 3,
-          "w": 3,
-          "x": 3,
-          "y": 23
-        },
-        "id": 17,
-        "options": {
-          "graphMode": "area",
-          "percentChangeColorMode": "standard",
-          "reduceOptions": {
-            "calcs": [
-              "mean"
-            ]
-          },
-          "showPercentChange": false
-        },
-        "pluginVersion": "v11.4.0",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "$datasource"
-            },
-            "expr": "avg by (instance) (\n  probe_duration_seconds{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }\n)\n",
-            "instant": false
-          }
-        ],
-        "title": "Average Latency",
-        "type": "stat"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "$datasource"
-        },
-        "description": "Mean DNS lookup time for the selected instance.",
-        "fieldConfig": {
-          "defaults": {
-            "mappings": [],
-            "thresholds": {
-              "steps": [
-                {
-                  "color": "green",
-                  "value": 0
-                }
-              ]
-            },
-            "unit": "s"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 3,
-          "w": 6,
-          "x": 0,
-          "y": 26
-        },
-        "id": 18,
-        "options": {
-          "graphMode": "area",
-          "percentChangeColorMode": "standard",
-          "reduceOptions": {
-            "calcs": [
-              "mean"
-            ]
-          },
-          "showPercentChange": false
-        },
-        "pluginVersion": "v11.4.0",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "$datasource"
-            },
-            "expr": "avg by (instance) (\n  probe_dns_lookup_time_seconds{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }\n)\n",
-            "instant": false
-          }
-        ],
-        "title": "Average DNS Lookup",
-        "type": "stat"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "$datasource"
-        },
-        "description": "HTTP phase duration and total probe duration over time for the selected instance.",
-        "fieldConfig": {
-          "defaults": {
-            "custom": {
-              "fillOpacity": 10
-            },
-            "unit": "s"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 9,
-          "w": 18,
-          "x": 6,
-          "y": 11
-        },
-        "id": 19,
-        "options": {
-          "legend": {
-            "calcs": [
-              "mean",
-              "max"
-            ],
-            "displayMode": "table",
-            "placement": "right",
-            "showLegend": true,
-            "sortBy": "Mean",
-            "sortDesc": true
-          },
-          "tooltip": {
-            "mode": "multi",
-            "sort": "desc"
-          }
-        },
-        "pluginVersion": "v11.4.0",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "$datasource"
-            },
-            "exemplar": false,
-            "expr": "sum by (instance) (\n  avg by (phase,instance) (\n    probe_http_duration_seconds{\n      cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n    }\n  )\n)\n",
-            "legendFormat": "HTTP duration"
-          },
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "$datasource"
-            },
-            "exemplar": false,
-            "expr": "avg by (instance) (\n  probe_duration_seconds{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }\n)\n",
-            "legendFormat": "Total probe duration"
-          }
-        ],
-        "title": "Probe Duration",
-        "type": "timeseries"
-      },
-      {
-        "datasource": {
-          "type": "prometheus",
-          "uid": "$datasource"
-        },
-        "description": "Time spent in each probe phase (DNS, connect, TLS, processing, transfer) for the selected instance.",
-        "fieldConfig": {
-          "defaults": {
-            "custom": {
-              "fillOpacity": 100,
-              "lineWidth": 1,
-              "stacking": {
-                "mode": "percent"
-              }
-            },
-            "unit": "s"
-          },
-          "overrides": []
-        },
-        "gridPos": {
-          "h": 9,
-          "w": 18,
-          "x": 6,
-          "y": 20
-        },
-        "id": 20,
-        "options": {
-          "legend": {
-            "calcs": [
-              "mean",
-              "max"
-            ],
-            "displayMode": "table",
-            "placement": "right",
-            "showLegend": true,
-            "sortBy": "Mean",
-            "sortDesc": true
-          },
-          "tooltip": {
-            "mode": "multi",
-            "sort": "desc"
-          }
-        },
-        "pluginVersion": "v11.4.0",
-        "targets": [
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "$datasource"
-            },
-            "exemplar": false,
-            "expr": "avg(\n  probe_http_duration_seconds{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }\n) by (phase)\n",
-            "legendFormat": "{{ phase }}"
-          },
-          {
-            "datasource": {
-              "type": "prometheus",
-              "uid": "$datasource"
-            },
-            "exemplar": false,
-            "expr": "avg(\n  probe_icmp_duration_seconds{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }\n) by (phase)\n",
-            "legendFormat": "{{ phase }}"
-          }
-        ],
-        "title": "Probe Phases",
-        "type": "timeseries"
+        }
       }
     ],
-    "schemaVersion": 39,
+    "cursorSync": "Off",
+    "description": "A dashboard that monitors the Blackbox Exporter. It is created using the [blackbox-exporter-mixin](https://github.com/adinhodovic/blackbox-exporter-mixin) for the [blackbox-exporter](https://github.com/prometheus/blackbox_exporter). The dashboards were generated using [blackbox-exporter-mixin](https://github.com/adinhodovic/blackbox-exporter-mixin). Open issues and create feature requests in the repository.",
+    "editable": true,
+    "elements": {
+      "panel-10": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "$datasource"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "expr": "max by (instance) (\n  probe_success{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }\n)\n",
+                        "instant": true
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "A"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "Whether the most recent probe succeeded.",
+          "id": 10,
+          "links": [],
+          "title": "Probe Success",
+          "vizConfig": {
+            "group": "stat",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "mappings": [
+                    {
+                      "options": {
+                        "0": {
+                          "color": "red",
+                          "text": "No"
+                        },
+                        "1": {
+                          "color": "green",
+                          "text": "Yes"
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "unit": "short"
+                },
+                "overrides": []
+              },
+              "options": {
+                "colorMode": "background",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              }
+            },
+            "version": "13.3.0"
+          }
+        }
+      },
+      "panel-11": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "$datasource"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "expr": "max by (instance) (\n  probe_http_status_code{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }\n)\n",
+                        "instant": true
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "A"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "Most recent HTTP status code returned by the probe.",
+          "id": 11,
+          "links": [],
+          "title": "Latest Response Code",
+          "vizConfig": {
+            "group": "stat",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      },
+                      {
+                        "color": "blue",
+                        "value": 300
+                      },
+                      {
+                        "color": "yellow",
+                        "value": 400
+                      },
+                      {
+                        "color": "red",
+                        "value": 500
+                      }
+                    ]
+                  },
+                  "unit": "short"
+                },
+                "overrides": []
+              },
+              "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              }
+            },
+            "version": "13.3.0"
+          }
+        }
+      },
+      "panel-12": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "$datasource"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "expr": "max by (instance) (\n  probe_http_ssl{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }\n)\n",
+                        "instant": true
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "A"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "Whether the probe endpoint is using SSL/TLS.",
+          "id": 12,
+          "links": [],
+          "title": "SSL",
+          "vizConfig": {
+            "group": "stat",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "mappings": [
+                    {
+                      "options": {
+                        "0": {
+                          "color": "red",
+                          "text": "No"
+                        },
+                        "1": {
+                          "color": "green",
+                          "text": "Yes"
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "unit": "short"
+                },
+                "overrides": []
+              },
+              "options": {
+                "colorMode": "background",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              }
+            },
+            "version": "13.3.0"
+          }
+        }
+      },
+      "panel-13": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "$datasource"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "expr": "max by (instance,version) (\n  probe_tls_version_info{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }\n)\n",
+                        "instant": true,
+                        "legendFormat": "{{version}}"
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "A"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "TLS version negotiated for the probe connection.",
+          "id": 13,
+          "links": [],
+          "title": "SSL Version",
+          "vizConfig": {
+            "group": "stat",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "red",
+                        "value": 0
+                      },
+                      {
+                        "color": "green",
+                        "value": 1
+                      }
+                    ]
+                  },
+                  "unit": "short"
+                },
+                "overrides": []
+              },
+              "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "name",
+                "wideLayout": true
+              }
+            },
+            "version": "13.3.0"
+          }
+        }
+      },
+      "panel-14": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "$datasource"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "expr": "min by (instance) (\n  probe_ssl_earliest_cert_expiry{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  } - time()\n)\n",
+                        "instant": false
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "A"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "Time remaining until the SSL certificate expires. Red when below the configured threshold.",
+          "id": 14,
+          "links": [],
+          "title": "SSL Certificate Expiry",
+          "vizConfig": {
+            "group": "stat",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "red",
+                        "value": 0
+                      },
+                      {
+                        "color": "green",
+                        "value": 1814400
+                      }
+                    ]
+                  },
+                  "unit": "dtdurations"
+                },
+                "overrides": []
+              },
+              "options": {
+                "colorMode": "background",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              }
+            },
+            "version": "13.3.0"
+          }
+        }
+      },
+      "panel-15": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "$datasource"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "expr": "max by (instance) (\n  probe_http_redirects{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }\n)\n",
+                        "instant": true
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "A"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "Whether the probe followed any HTTP redirects.",
+          "id": 15,
+          "links": [],
+          "title": "Redirects",
+          "vizConfig": {
+            "group": "stat",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "mappings": [
+                    {
+                      "options": {
+                        "0": {
+                          "color": "green",
+                          "text": "No"
+                        },
+                        "1": {
+                          "color": "blue",
+                          "text": "Yes"
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "unit": "short"
+                },
+                "overrides": []
+              },
+              "options": {
+                "colorMode": "background",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              }
+            },
+            "version": "13.3.0"
+          }
+        }
+      },
+      "panel-16": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "$datasource"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "expr": "max by (instance) (\n  probe_http_version{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }\n)\n",
+                        "instant": true,
+                        "legendFormat": "{{version}}"
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "A"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "HTTP protocol version used by the probe.",
+          "id": 16,
+          "links": [],
+          "title": "HTTP Version",
+          "vizConfig": {
+            "group": "stat",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "unit": "short"
+                },
+                "overrides": []
+              },
+              "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              }
+            },
+            "version": "13.3.0"
+          }
+        }
+      },
+      "panel-17": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "$datasource"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "expr": "avg by (instance) (\n  probe_duration_seconds{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }\n)\n",
+                        "instant": false
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "A"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "Mean probe duration for the selected instance.",
+          "id": 17,
+          "links": [],
+          "title": "Average Latency",
+          "vizConfig": {
+            "group": "stat",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "unit": "s"
+                },
+                "overrides": []
+              },
+              "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "mean"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              }
+            },
+            "version": "13.3.0"
+          }
+        }
+      },
+      "panel-18": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "$datasource"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "expr": "avg by (instance) (\n  probe_dns_lookup_time_seconds{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }\n)\n",
+                        "instant": false
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "A"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "Mean DNS lookup time for the selected instance.",
+          "id": 18,
+          "links": [],
+          "title": "Average DNS Lookup",
+          "vizConfig": {
+            "group": "stat",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "unit": "s"
+                },
+                "overrides": []
+              },
+              "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "mean"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              }
+            },
+            "version": "13.3.0"
+          }
+        }
+      },
+      "panel-19": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "$datasource"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "exemplar": false,
+                        "expr": "sum by (instance) (\n  avg by (phase,instance) (\n    probe_http_duration_seconds{\n      cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n    }\n  )\n)\n",
+                        "legendFormat": "HTTP duration"
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "A"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "$datasource"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "exemplar": false,
+                        "expr": "avg by (instance) (\n  probe_duration_seconds{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }\n)\n",
+                        "legendFormat": "Total probe duration"
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "B"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "HTTP phase duration and total probe duration over time for the selected instance.",
+          "id": 19,
+          "links": [],
+          "title": "Probe Duration",
+          "vizConfig": {
+            "group": "timeseries",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "barWidthFactor": 0.6,
+                    "drawStyle": "line",
+                    "fillOpacity": 10,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "auto",
+                    "showValues": false,
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  },
+                  "unit": "s"
+                },
+                "overrides": []
+              },
+              "options": {
+                "legend": {
+                  "calcs": [
+                    "mean",
+                    "max"
+                  ],
+                  "displayMode": "table",
+                  "placement": "right",
+                  "showLegend": true,
+                  "sortBy": "Mean",
+                  "sortDesc": true
+                },
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "multi",
+                  "sort": "desc"
+                }
+              }
+            },
+            "version": "13.3.0"
+          }
+        }
+      },
+      "panel-2": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "$datasource"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "expr": "max by (instance) (\n  probe_success{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n\n  }\n)\n",
+                        "legendFormat": "{{instance}}"
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "A"
+                  }
+                }
+              ],
+              "queryOptions": {
+                "maxDataPoints": 100
+              },
+              "transformations": []
+            }
+          },
+          "description": "Current up/down status for all probes. Each probe is shown as Up (green) or Down (red). Click a probe to navigate to its detail view.",
+          "id": 2,
+          "links": [],
+          "title": "Status Map",
+          "vizConfig": {
+            "group": "stat",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "links": [
+                    {
+                      "targetBlank": true,
+                      "title": "Go To Probe",
+                      "type": "link",
+                      "url": "d/blackbox-exporter-j4da/blackbox-exporter?var-instance=${__field.labels.instance}\u0026var-job=${__field.labels.job}"
+                    }
+                  ],
+                  "mappings": [
+                    {
+                      "options": {
+                        "0": {
+                          "color": "red",
+                          "text": "Down"
+                        },
+                        "1": {
+                          "color": "green",
+                          "text": "Up"
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ],
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "unit": "short"
+                },
+                "overrides": []
+              },
+              "options": {
+                "colorMode": "background",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "text": {
+                  "titleSize": 18,
+                  "valueSize": 18
+                },
+                "textMode": "value_and_name",
+                "wideLayout": true
+              }
+            },
+            "version": "13.3.0"
+          }
+        }
+      },
+      "panel-20": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "$datasource"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "exemplar": false,
+                        "expr": "avg(\n  probe_http_duration_seconds{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }\n) by (phase)\n",
+                        "legendFormat": "{{ phase }}"
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "A"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "$datasource"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "exemplar": false,
+                        "expr": "avg(\n  probe_icmp_duration_seconds{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }\n) by (phase)\n",
+                        "legendFormat": "{{ phase }}"
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "B"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "Time spent in each probe phase (DNS, connect, TLS, processing, transfer) for the selected instance.",
+          "id": 20,
+          "links": [],
+          "title": "Probe Phases",
+          "vizConfig": {
+            "group": "timeseries",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "barWidthFactor": 0.6,
+                    "drawStyle": "line",
+                    "fillOpacity": 100,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "auto",
+                    "showValues": false,
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "percent"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  },
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      },
+                      {
+                        "color": "red",
+                        "value": 80
+                      }
+                    ]
+                  },
+                  "unit": "s"
+                },
+                "overrides": []
+              },
+              "options": {
+                "legend": {
+                  "calcs": [
+                    "mean",
+                    "max"
+                  ],
+                  "displayMode": "table",
+                  "placement": "right",
+                  "showLegend": true,
+                  "sortBy": "Mean",
+                  "sortDesc": true
+                },
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "multi",
+                  "sort": "desc"
+                }
+              }
+            },
+            "version": "13.3.0"
+          }
+        }
+      },
+      "panel-3": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "$datasource"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "expr": "count(\n  probe_success{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n\n  }\n)\n",
+                        "instant": false
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "A"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "Total number of probes currently being monitored.",
+          "id": 3,
+          "links": [],
+          "title": "Probes",
+          "vizConfig": {
+            "group": "stat",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "red",
+                        "value": 0
+                      },
+                      {
+                        "color": "green",
+                        "value": 0.001
+                      }
+                    ]
+                  },
+                  "unit": "short"
+                },
+                "overrides": []
+              },
+              "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              }
+            },
+            "version": "13.3.0"
+          }
+        }
+      },
+      "panel-4": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "$datasource"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "expr": "(\n  count(\n    probe_success{\n      cluster=\"$cluster\",\njob=~\"$job\"\n\n\n    } == 1\n  )\n  OR vector(0)\n) /\ncount(\n  probe_success{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n\n  }\n)\n",
+                        "instant": false
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "A"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "Percentage of probes currently reporting success.",
+          "id": 4,
+          "links": [],
+          "title": "Probes Success",
+          "vizConfig": {
+            "group": "stat",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "red",
+                        "value": 0
+                      },
+                      {
+                        "color": "yellow",
+                        "value": 0.99
+                      },
+                      {
+                        "color": "green",
+                        "value": 0.999
+                      }
+                    ]
+                  },
+                  "unit": "percentunit"
+                },
+                "overrides": []
+              },
+              "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              }
+            },
+            "version": "13.3.0"
+          }
+        }
+      },
+      "panel-5": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "$datasource"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "expr": "count(\n  probe_http_ssl{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n\n  } == 1\n) /\ncount(\n  probe_http_version{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n\n  }\n)\n",
+                        "instant": false
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "A"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "Percentage of HTTP probes using SSL/TLS.",
+          "id": 5,
+          "links": [],
+          "title": "Probes SSL",
+          "vizConfig": {
+            "group": "stat",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "red",
+                        "value": 0
+                      },
+                      {
+                        "color": "green",
+                        "value": 0.999
+                      }
+                    ]
+                  },
+                  "unit": "percentunit"
+                },
+                "overrides": []
+              },
+              "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              }
+            },
+            "version": "13.3.0"
+          }
+        }
+      },
+      "panel-6": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "$datasource"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "expr": "avg(\n  probe_duration_seconds{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n\n  }\n)\n",
+                        "instant": false
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "A"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "Average probe duration across all monitored instances.",
+          "id": 6,
+          "links": [],
+          "title": "Probe Average Duration",
+          "vizConfig": {
+            "group": "stat",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "unit": "s"
+                },
+                "overrides": []
+              },
+              "options": {
+                "colorMode": "value",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              }
+            },
+            "version": "13.3.0"
+          }
+        }
+      },
+      "panel-8": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "$datasource"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "expr": "max by (instance) (\n  probe_success{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }\n)\n",
+                        "instant": false
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "A"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "Current probe success rate for the selected instance.",
+          "id": 8,
+          "links": [],
+          "title": "Uptime",
+          "vizConfig": {
+            "group": "stat",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "red",
+                        "value": 0
+                      },
+                      {
+                        "color": "yellow",
+                        "value": 0.99
+                      },
+                      {
+                        "color": "green",
+                        "value": 0.999
+                      }
+                    ]
+                  },
+                  "unit": "percentunit"
+                },
+                "overrides": []
+              },
+              "options": {
+                "colorMode": "background",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "mean"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              }
+            },
+            "version": "13.3.0"
+          }
+        }
+      },
+      "panel-9": {
+        "kind": "Panel",
+        "spec": {
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "$datasource"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "expr": "avg_over_time(\n  probe_success{\n    cluster=\"$cluster\",\njob=~\"$job\"\n\n,\ninstance=~\"$instance\"\n\n  }[30d]\n)\n",
+                        "instant": true
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "A"
+                  }
+                }
+              ],
+              "queryOptions": {},
+              "transformations": []
+            }
+          },
+          "description": "Average probe success rate over the last 30 days.",
+          "id": 9,
+          "links": [],
+          "title": "Uptime 30d",
+          "vizConfig": {
+            "group": "stat",
+            "kind": "VizConfig",
+            "spec": {
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "red",
+                        "value": 0
+                      },
+                      {
+                        "color": "yellow",
+                        "value": 0.99
+                      },
+                      {
+                        "color": "green",
+                        "value": 0.999
+                      }
+                    ]
+                  },
+                  "unit": "percentunit"
+                },
+                "overrides": []
+              },
+              "options": {
+                "colorMode": "background",
+                "graphMode": "area",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "mean"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              }
+            },
+            "version": "13.3.0"
+          }
+        }
+      }
+    },
+    "layout": {
+      "kind": "RowsLayout",
+      "spec": {
+        "rows": [
+          {
+            "kind": "RowsLayoutRow",
+            "spec": {
+              "collapse": false,
+              "layout": {
+                "kind": "GridLayout",
+                "spec": {
+                  "items": [
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-2"
+                        },
+                        "height": 5,
+                        "width": 24,
+                        "x": 0,
+                        "y": 0
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-3"
+                        },
+                        "height": 4,
+                        "width": 6,
+                        "x": 0,
+                        "y": 5
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-4"
+                        },
+                        "height": 4,
+                        "width": 6,
+                        "x": 6,
+                        "y": 5
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-5"
+                        },
+                        "height": 4,
+                        "width": 6,
+                        "x": 12,
+                        "y": 5
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-6"
+                        },
+                        "height": 4,
+                        "width": 6,
+                        "x": 18,
+                        "y": 5
+                      }
+                    }
+                  ]
+                }
+              },
+              "title": "Summary"
+            }
+          },
+          {
+            "kind": "RowsLayoutRow",
+            "spec": {
+              "collapse": false,
+              "layout": {
+                "kind": "GridLayout",
+                "spec": {
+                  "items": [
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-8"
+                        },
+                        "height": 3,
+                        "width": 3,
+                        "x": 0,
+                        "y": 0
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-9"
+                        },
+                        "height": 3,
+                        "width": 3,
+                        "x": 3,
+                        "y": 0
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-19"
+                        },
+                        "height": 9,
+                        "width": 18,
+                        "x": 6,
+                        "y": 0
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-10"
+                        },
+                        "height": 3,
+                        "width": 3,
+                        "x": 0,
+                        "y": 3
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-11"
+                        },
+                        "height": 3,
+                        "width": 3,
+                        "x": 3,
+                        "y": 3
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-12"
+                        },
+                        "height": 3,
+                        "width": 3,
+                        "x": 0,
+                        "y": 6
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-13"
+                        },
+                        "height": 3,
+                        "width": 3,
+                        "x": 3,
+                        "y": 6
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-14"
+                        },
+                        "height": 3,
+                        "width": 3,
+                        "x": 0,
+                        "y": 9
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-15"
+                        },
+                        "height": 3,
+                        "width": 3,
+                        "x": 3,
+                        "y": 9
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-20"
+                        },
+                        "height": 9,
+                        "width": 18,
+                        "x": 6,
+                        "y": 9
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-16"
+                        },
+                        "height": 3,
+                        "width": 3,
+                        "x": 0,
+                        "y": 12
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-17"
+                        },
+                        "height": 3,
+                        "width": 3,
+                        "x": 3,
+                        "y": 12
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-18"
+                        },
+                        "height": 3,
+                        "width": 6,
+                        "x": 0,
+                        "y": 15
+                      }
+                    }
+                  ]
+                }
+              },
+              "repeat": {
+                "mode": "variable",
+                "value": "instance"
+              },
+              "title": "$instance"
+            }
+          }
+        ]
+      }
+    },
+    "links": [],
+    "liveNow": false,
+    "preferences": {
+      "layout": {
+        "kind": "GridLayout",
+        "spec": {
+          "items": []
+        }
+      }
+    },
+    "preload": false,
     "tags": [
       "blackbox-exporter",
       "blackbox-exporter-mixin"
     ],
-    "templating": {
-      "list": [
-        {
+    "timeSettings": {
+      "autoRefresh": "",
+      "autoRefreshIntervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "fiscalYearStartMonth": 0,
+      "from": "now-2d",
+      "hideTimepicker": false,
+      "timezone": "browser",
+      "to": "now"
+    },
+    "title": "Blackbox Exporter",
+    "variables": [
+      {
+        "kind": "DatasourceVariable",
+        "spec": {
+          "allowCustomValue": true,
           "current": {
-            "selected": true,
             "text": "default",
             "value": "default"
           },
+          "hide": "dontHide",
+          "includeAll": false,
           "label": "Data source",
+          "multi": false,
           "name": "datasource",
-          "query": "prometheus",
+          "options": [],
+          "pluginId": "prometheus",
+          "refresh": "onDashboardLoad",
           "regex": "",
-          "type": "datasource"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
+          "skipUrlSync": false
+        }
+      },
+      {
+        "kind": "QueryVariable",
+        "spec": {
+          "allowCustomValue": true,
+          "current": {
+            "text": "",
+            "value": ""
           },
-          "hide": 2,
+          "hide": "hideVariable",
+          "includeAll": false,
           "label": "Cluster",
+          "multi": false,
           "name": "cluster",
-          "query": "label_values(probe_success{}, cluster)",
-          "refresh": 2,
-          "sort": 1,
-          "type": "query"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
+          "options": [],
+          "query": {
+            "datasource": {
+              "name": "${datasource}"
+            },
+            "group": "prometheus",
+            "kind": "DataQuery",
+            "spec": {
+              "__legacyStringValue": "label_values(probe_success{}, cluster)"
+            },
+            "version": "v0"
           },
+          "refresh": "onTimeRangeChanged",
+          "regex": "",
+          "regexApplyTo": "value",
+          "skipUrlSync": false,
+          "sort": "alphabeticalAsc"
+        }
+      },
+      {
+        "kind": "QueryVariable",
+        "spec": {
+          "allowCustomValue": true,
+          "current": {
+            "text": "",
+            "value": ""
+          },
+          "hide": "dontHide",
           "includeAll": true,
           "label": "Job",
           "multi": true,
           "name": "job",
-          "query": "label_values(probe_success{cluster=\"$cluster\"}, job)",
-          "refresh": 2,
-          "sort": 1,
-          "type": "query"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
+          "options": [],
+          "query": {
+            "datasource": {
+              "name": "${datasource}"
+            },
+            "group": "prometheus",
+            "kind": "DataQuery",
+            "spec": {
+              "__legacyStringValue": "label_values(probe_success{cluster=\"$cluster\"}, job)"
+            },
+            "version": "v0"
           },
+          "refresh": "onTimeRangeChanged",
+          "regex": "",
+          "regexApplyTo": "value",
+          "skipUrlSync": false,
+          "sort": "alphabeticalAsc"
+        }
+      },
+      {
+        "kind": "QueryVariable",
+        "spec": {
+          "allowCustomValue": true,
+          "current": {
+            "text": "",
+            "value": ""
+          },
+          "hide": "dontHide",
           "includeAll": false,
           "label": "Instance",
           "multi": false,
           "name": "instance",
-          "query": "label_values(probe_success{cluster=\"$cluster\", job=~\"$job\"}, instance)",
-          "refresh": 2,
-          "sort": 1,
-          "type": "query"
+          "options": [],
+          "query": {
+            "datasource": {
+              "name": "${datasource}"
+            },
+            "group": "prometheus",
+            "kind": "DataQuery",
+            "spec": {
+              "__legacyStringValue": "label_values(probe_success{cluster=\"$cluster\", job=~\"$job\"}, instance)"
+            },
+            "version": "v0"
+          },
+          "refresh": "onTimeRangeChanged",
+          "regex": "",
+          "regexApplyTo": "value",
+          "skipUrlSync": false,
+          "sort": "alphabeticalAsc"
         }
-      ]
-    },
-    "time": {
-      "from": "now-2d",
-      "to": "now"
-    },
-    "timezone": "utc",
-    "title": "Blackbox Exporter"
+      }
+    ]
   }
 }
